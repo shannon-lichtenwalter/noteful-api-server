@@ -8,7 +8,7 @@ describe('Noteful endpoints', function () {
   before('make knex intance', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DB_URL
+      connection: process.env.TEST_DATABASE_URL
     });
     app.set('db', db);
   });
@@ -207,7 +207,7 @@ describe('Noteful endpoints', function () {
         return supertest(app)
           .patch(`/api/notes/${noteIdToUpdate}`)
           .send(updatedNote)
-          .expect(204)
+          .expect(200)
           .then(() => {
             return supertest(app)
               .get(`/api/notes/${noteIdToUpdate}`)
