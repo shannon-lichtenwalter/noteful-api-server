@@ -43,7 +43,9 @@ notesRouter
 
     NotesService.insertNote(knexInstance, newNote)
       .then(note => {
-        return res.status(201).json(serializeNote(note));
+        return res.status(201)
+          .location(path.posix.join(req.originalUrl, `/${newNote.id}`))
+          .json(serializeNote(note));
       })
       .catch(next);
   });
@@ -88,8 +90,8 @@ notesRouter
       return res.status(400).json({ error: { message: 'To update note please include name, date_modified, folder_id, or content.' } });
     }
     NotesService.updateNote(knexInstance, noteId, updatedNote)
-      .then(() => {
-        return res.status(204).end();
+      .then((note) => {
+        return res.status(200).json(serializeNote(note));
       })
       .catch(next);
   });
